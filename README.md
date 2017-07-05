@@ -14,3 +14,4 @@ The services takes the `geo-city` parameter from the action, performs geolocatio
 
 The service packs the result in the Api.ai webhook-compatible response JSON and returns it to Api.ai.
 
+### This fork is maintained by [Arvind Rachuri](https://github.com/arealdeadone)
