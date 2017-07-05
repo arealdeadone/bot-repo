@@ -38,25 +38,18 @@ def webhook():
 def processRequest(req):
     if req.get("result").get("action") != "yahooWeatherForecast":
         return {}
-    baseurl = "https://query.yahooapis.com/v1/public/yql?"
-    yql_query = makeYqlQuery(req)
-    if yql_query is None:
-        return {}
-    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
+    baseurl = "https://api.askvaidyo.com/api/v2/user "
+    yql_url = baseurl
+    yql_url.add_header('authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhc3NvY2lhdGlvbnMiOm51bGwsImN1c3RvbV9maWVsZCI6bnVsbCwicm9sZSI6W3sicm9sZV90eXBlX2lkIjoxMCwiY3JlYXRlZF90aW1lIjoiMjAxNy0wMS0zMVQxNDoyNToyNC42NjYwMTYiLCJpZCI6NDcsIm1vZGlmaWVkX3RpbWUiOiIyMDE3LTAxLTMxVDE0OjI1OjI0LjY2NjAxNiIsInJvbGVfYWN0aXZlIjoxLCJ1c2VyX2lkIjoxMTN9XSwiYWRkcmVzcyI6bnVsbCwidXNlcmRldGFpbHMiOnsiZXh0X3Byb3ZpZGVyX2lkIjpudWxsLCJpZCI6MTEzLCJ1dWlkIjoiVkFJRC1HVUVTVC0xIiwidXNlcm5hbWUiOiJndWVzdHVzZXJAdmFpZHlvLmNvbSJ9LCJwaG9uZSI6bnVsbCwicHJvZmlsZSI6bnVsbCwiZGV2aWNlIjpudWxsLCJpYXQiOjE0ODcxNjIzMTIsImVtYWlsIjpudWxsLCJjdXN0b21lciI6bnVsbCwic3RhdHVzIjoyMDB9.qCev5yw2kAdpd9VtMo_GdFVhmbPfknne2VuplUWmPcA=' )
+    yql_url.add_header("Content-Type","application/json")
+    yql_url.add_header("X-Select",'{"userid":402,"role":true,"email":true,"customer":true,"profile":true,"role":true,"device":true,"phone":true,"associations":true,"custom":true,"address":true}')
     result = urlopen(yql_url).read()
     data = json.loads(result)
     res = makeWebhookResult(data)
     return res
 
 
-def makeYqlQuery(req):
-    result = req.get("result")
-    parameters = result.get("parameters")
-    city = parameters.get("geo-city")
-    if city is None:
-        return None
 
-    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
 
 
 def makeWebhookResult(data):
@@ -84,8 +77,7 @@ def makeWebhookResult(data):
 
     # print(json.dumps(item, indent=4))
 
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-             ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
+    speech = "HI VAIDYO";
 
     print("Response:")
     print(speech)
